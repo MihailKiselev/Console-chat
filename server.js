@@ -9,19 +9,16 @@ const users = {};
 io.on('connection', (socket) => {
     console.log('User connected:', socket.id);
 
-    // Обработка нового пользователя
     socket.on('new-user', (username) => {
         users[socket.id] = username;
         io.emit('user-connected', username);
     });
 
-    // Обработка нового сообщения
     socket.on('send-message', (message) => {
         const username = users[socket.id];
         io.emit('chat-message', { username, message });
     });
 
-    // Обработка отключения пользователя
     socket.on('disconnect', () => {
         const username = users[socket.id];
         io.emit('user-disconnected', username);
